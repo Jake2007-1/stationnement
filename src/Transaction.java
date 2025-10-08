@@ -9,7 +9,5 @@ public class Transaction {
         this.montant = montant;
     }
 
-    public boolean verifStationnement(){
-        return placeStationnement.matches("[G, SQ][0-9]+");
-    }
+
 }
