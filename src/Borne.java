@@ -28,9 +28,10 @@ public class Borne {
         boolean zoneG = false;
         boolean zoneSQ = false;
 
-        if(placeStationnement.matches("[SQ][0-9]+")){
+        if(placeStationnement.matches("[S][Q][0-9]+")){
             zoneSQ = true;
-        } if(placeStationnement.matches("G[0-9]+")){
+        }
+        else if(placeStationnement.matches("G[0-9]+")){
             zoneG = true;
         }
         if(zoneG) {

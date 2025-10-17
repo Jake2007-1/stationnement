@@ -21,7 +21,7 @@ public class Transaction {
       montant = 0;
   }
 
-  public void paiement(Credit carte){
+  public int paiement(Credit carte){
       if(carte.validCarte()){
           Scanner s = new Scanner(System.in);
           boolean confirmed = false;
@@ -51,15 +51,27 @@ public class Transaction {
               System.out.println("Duree : " + duree / 100);
               System.out.println("Montant : " + montant / 100);
           }
-
       }
       else {
           System.out.println("Carte invalide");
       }
+      return montant;
 
   }
-  public void paiement(Piece piece){
-
+  public int paiement(Piece piece){
+      boolean confirmed = false;
+      Scanner s = new Scanner(System.in);
+      montant += piece.getValeur();
+      duree += Math.round(60 * (piece.getValeur() / tarif));
+      if(s.nextLine() == "confirm") confirmed = true;
+      while(!confirmed){
+        Piece p = new Piece(s.nextInt());
+        montant += p.getValeur();
+        duree += Math.round(60 * (p.getValeur() / tarif));
+        if (duree > 120) duree = 120;
+        if(s.nextLine() == "confirm") confirmed = true;
+      }
+      return montant;
   }
 
 }
