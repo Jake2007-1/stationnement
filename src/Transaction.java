@@ -68,8 +68,13 @@ public class Transaction {
         Piece p = new Piece(s.nextInt());
         montant += p.getValeur();
         duree += Math.round(60 * (p.getValeur() / tarif));
-        if (duree > 120) duree = 120;
-        if(s.nextLine() == "confirm") confirmed = true;
+        if (duree > 120) {
+            duree = 120;
+            confirmed = true;
+        }
+        if(s.nextLine() == "confirm") {
+            confirmed = true;
+        }
       }
       return montant;
   }
