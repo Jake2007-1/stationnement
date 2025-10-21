@@ -202,34 +202,53 @@ public class GUITP2 {
     public void boutonNumeroLettre_actionPerformed(String lettreChiffre) {
         // 2. À compléter, afficher la place choisie dans le champMessage
         // à partir de la lettre ou du chiffre cliqué en paramètre
-        place += lettreChiffre;
-        champMessage.setText(place);
+        if(!b.isPlaceConfirmer()){
+            place += lettreChiffre;
+            champMessage.setText(place);
+        }
 
     }
 
     private void boutonEntree_actionPerformed() {
         //3. à coder
-        b.verifStationnement(place);
+        champMessage.setText("");
+        String message = b.verifStationnement(place);
+        if(message.equals("Place invalide")){
+            place = "";
+            b.setPlaceConfirmer(false);
+        }
+        b.setPlaceConfirmer(true);
+        champMessage.setText(message);
     }
 
     private void bouton25_actionPerformed() {
         //4. à coder
+        champMessage.setText("");
+        champMessage.setText(b.paiement(25));
+
     }
 
     private void bouton100_actionPerformed() {
         //5. à coder
+        champMessage.setText("");
+        champMessage.setText(b.paiement(100));
     }
 
     private void bouton200_actionPerformed() {
         //6. à coder
+        champMessage.setText("");
+        champMessage.setText(b.paiement(200));
     }
 
     private void boutonValiderDateExp_actionPerformed(){
         //7. à coder
+        champMessage.setText("");
+        champMessage.setText(b.validCarte(champNumeroCarte.getText(),champDateExp.getText()));
     }
 
     private void boutonPlus_actionPerformed() {
         //8. à coder
+
     }
 
     private void boutonMoins_actionPerformed(){
