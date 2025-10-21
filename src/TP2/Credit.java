@@ -1,3 +1,5 @@
+package TP2;
+
 import java.time.YearMonth;
 
 public class Credit {
@@ -18,7 +20,7 @@ public class Credit {
 
     public boolean validCarte(){
         boolean valide = false;
-        if(num.matches("[0-9]{12}") && exp.isBefore(YearMonth.now())){
+        if(num.matches("[0-9]{16}") && exp.isAfter(YearMonth.now())){
             valide = true;
         }
         return valide;

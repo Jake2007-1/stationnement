@@ -1,3 +1,5 @@
+package TP2;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -5,10 +7,15 @@ import java.time.LocalTime;
 
 public class Borne {
     private Transaction transactionCourante;
-    private static double banque;
+    private static double banque = 0;
 
     public static final String ZONE_SQ = "SQ";
     public static final String ZONE_G = "G";
+
+    public Borne() {
+        this.transactionCourante = null;
+    }
+
 
     //zone G = 4,25/h
     // Lun a Ven 8-23
