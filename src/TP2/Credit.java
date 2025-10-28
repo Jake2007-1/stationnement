@@ -5,10 +5,12 @@ import java.time.YearMonth;
 public class Credit {
     private String num;
     private YearMonth exp;
+    private double solde;
 
-    public Credit(String num, YearMonth exp) {
+    public Credit(String num, YearMonth exp, double solde) {
         this.num = num;
         setExp(exp);
+        this.solde = solde;
     }
 
     private void setExp(YearMonth exp){
@@ -28,8 +30,6 @@ public class Credit {
     public String getNum() {
         return num;
     }
-
-    private double solde;
 
 
 

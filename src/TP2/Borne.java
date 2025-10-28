@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
 
 public class Borne {
@@ -132,7 +131,7 @@ public class Borne {
 
         return message;
     }
-    public String paiement(int piece){
+    public String plus(int piece){
 
         int montant = transactionCourante.getMontant();
         int duree = transactionCourante.getDuree();
@@ -148,7 +147,7 @@ public class Borne {
 
     }
     public String validCarte(String s, String exp){
-        Credit carte = new Credit(s,YearMonth.parse(exp, DateTimeFormatter.ofPattern("MM/yy")));
+        Credit carte = new Credit(s,YearMonth.parse(exp, DateTimeFormatter.ofPattern("MM/yy")), 1000);
         String message;
         if(carte.validCarte()){
             message = "Carte valid veuillez continuer.";
@@ -161,22 +160,41 @@ public class Borne {
         return message;
 
     }
-    public String paiement(){
-        int montant = transactionCourante.getMontant();
-        int duree = transactionCourante.getDuree();
-        if (duree != 120){
-        montant += transactionCourante.getTarif() / 4;
-        duree += 15;
-        }
-        return "Pour ce montant : " + (double) montant / 100 + "$ \nVous avez cet durée : " + duree + "minutes.";
-    }
     public String plus(){
+        if (transactionCourante.getDuree() != 120){
+            transactionCourante.setMontant(transactionCourante.getMontant() + transactionCourante.getTarif() / 4);
+            transactionCourante.setDuree(transactionCourante.getDuree() + 15);
+        }
+        return "Pour ce montant : " +  (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+    }
+    public String moin(){
+        if (transactionCourante.getDuree() != 120){
+            transactionCourante.setMontant(transactionCourante.getMontant() - transactionCourante.getTarif() / 4);
+            transactionCourante.setDuree(transactionCourante.getDuree() - 15);
+        }
+        return "Pour ce montant : " + (double)transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+    }
+    public String max(){
+        transactionCourante.setDuree(120);
+        transactionCourante.setMontant(transactionCourante.getTarif() * 2);
+
+        return "Pour ce montant : " + (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+    }
+    public String ok(){
+        banque += transactionCourante.getMontant();
+        String message = "Vous avez " + transactionCourante.getDuree() + "minutes au cout de " + transactionCourante.getMontant() +". \nBonne Journée!";
+        transactionCourante.init();
+        return message;
+    }
+
+    public String atteintMax(){
         String message = "";
         if (transactionCourante.getDuree() == 120){
             message = "Vous êtes déja au maximum, veuillez confirmer la transaction ou retirer du temps.";
         }
         return  message;
     }
+
 
 
 }

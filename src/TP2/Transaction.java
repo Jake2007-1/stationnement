@@ -27,11 +27,24 @@ public class Transaction {
       tarif = Objects.equals(zone, "SQ") ? 225 : 425;
       duree = 0;
       montant = 0;
+      carte = null;
       typePaiement = "inconnu";
   }
 
     public void setCarte(Credit carte) {
         this.carte = carte;
+    }
+
+    public Credit getCarte() {
+        return carte;
+    }
+    public  void init(){
+      duree = 0;
+      montant = 0;
+      tarif = 0;
+      carte = null;
+      zone = "";
+      typePaiement = "";
     }
 
     public int getTarif() {
@@ -61,4 +74,5 @@ public class Transaction {
     public String getTypePaiement() {
         return typePaiement;
     }
+
 }
