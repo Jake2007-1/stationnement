@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 
@@ -12,8 +13,10 @@ public class Borne {
     private static double banque = 0;
     private String place;
     private boolean placeConfirmer;
+
     public static final String ZONE_SQ = "SQ";
     public static final String ZONE_G = "G";
+
 
     //zone G = 4,25/h
     // Lun a Ven 8-23
@@ -145,37 +148,12 @@ public class Borne {
 
     }
     public String validCarte(String s, String exp){
-        Credit carte = new Credit(s,YearMonth.parse(exp));
+        Credit carte = new Credit(s,YearMonth.parse(exp, DateTimeFormatter.ofPattern("MM/yy")));
         String message;
         if(carte.validCarte()){
-//            while( duree == 120){
-//                if (s.nextLine() == "+"){
-//                    duree += 15;
-//                    montant += tarif / 4;
-//
-//                }
-//                else if (s.nextLine() == "-" && duree != 0){
-//                    duree -= 15;
-//                    montant -= tarif / 4;
-//
-//                }
-//                else if( s.nextLine() == "max"){
-//                    duree = 120;
-//                    montant = tarif * 2;
-//                }
-//                else if (s.nextLine() == "confirm") {
-//                    confirmed = true;
-//                }
-//                else if (s.nextLine() == "cancel") {
-//                    duree = 0;
-//                    montant = 0;
-//                    confirmed = true;
-//                }
-//                System.out.println("Duree : " + duree / 100);
-//                System.out.println("Montant : " + montant / 100);
-//            }
             message = "Carte valid veuillez continuer.";
             transactionCourante.setTypePaiement("Carte");
+            transactionCourante.setCarte(carte);
         }
         else {
             message = "Carte invalid.";
@@ -183,14 +161,20 @@ public class Borne {
         return message;
 
     }
+    public String paiement(){
+        int montant = transactionCourante.getMontant();
+        int duree = transactionCourante.getDuree();
+        if (duree != 120){
+        montant += transactionCourante.getTarif() / 4;
+        duree += 15;
+        }
+        return "Pour ce montant : " + (double) montant / 100 + "$ \nVous avez cet durée : " + duree + "minutes.";
+    }
     public String plus(){
         String message = "";
         if (transactionCourante.getDuree() == 120){
             message = "Vous êtes déja au maximum, veuillez confirmer la transaction ou retirer du temps.";
         }
-        //else if  {
-
-        //}
         return  message;
     }
 

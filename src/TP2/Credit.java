@@ -8,7 +8,17 @@ public class Credit {
 
     public Credit(String num, YearMonth exp) {
         this.num = num;
-        this.exp = exp;
+        setExp(exp);
+    }
+
+    private void setExp(YearMonth exp){
+        if (12 >= exp.getMonthValue()){
+            this.exp = exp;
+        }
+        else {
+            this.exp = exp.withMonth(12);
+        }
+
     }
 
     public YearMonth getExp() {
@@ -25,7 +35,7 @@ public class Credit {
 
     public boolean validCarte(){
         boolean valide = false;
-        if(num.matches("[0-9]{16}") && exp.isAfter(YearMonth.now())){
+        if(exp.isAfter(YearMonth.now())){
             valide = true;
         }
         return valide;

@@ -10,6 +10,7 @@ public class Transaction {
     private int duree;
     private int tarif;
     private int montant;
+    private Credit carte;
     private String zone;
     private String typePaiement;
 
@@ -28,6 +29,10 @@ public class Transaction {
       montant = 0;
       typePaiement = "inconnu";
   }
+
+    public void setCarte(Credit carte) {
+        this.carte = carte;
+    }
 
     public int getTarif() {
         return tarif;

@@ -211,14 +211,17 @@ public class GUITP2 {
 
     private void boutonEntree_actionPerformed() {
         //3. à coder
-        champMessage.setText("");
-        String message = b.verifStationnement(place);
-        if(message.equals("Place invalide")){
-            place = "";
-            b.setPlaceConfirmer(false);
+        if(!b.isPlaceConfirmer()) {
+            champMessage.setText("");
+            String message = b.verifStationnement(place);
+            if (message.equals("Place invalide")) {
+                place = "";
+                message = "";
+                b.setPlaceConfirmer(false);
+            }
+            b.setPlaceConfirmer(true);
+            champMessage.setText(message);
         }
-        b.setPlaceConfirmer(true);
-        champMessage.setText(message);
     }
 
     private void bouton25_actionPerformed() {
@@ -248,7 +251,7 @@ public class GUITP2 {
 
     private void boutonPlus_actionPerformed() {
         //8. à coder
-
+        champMessage.setText(b.paiement());
     }
 
     private void boutonMoins_actionPerformed(){
