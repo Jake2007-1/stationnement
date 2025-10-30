@@ -13,6 +13,7 @@ public class Transaction {
     private Credit carte;
     private String zone;
     private String typePaiement;
+    private boolean placeConfirmer;
 
     //zone G = 4,25/h
     // Lun a Ven 8-23
@@ -29,7 +30,15 @@ public class Transaction {
       montant = 0;
       carte = null;
       typePaiement = "inconnu";
+      placeConfirmer = false;
   }
+
+    public boolean isPlaceConfirmer() {
+        return placeConfirmer;
+    }
+    public void setPlaceConfirmer(boolean placeConfirmer) {
+        this.placeConfirmer = placeConfirmer;
+    }
 
     public void setCarte(Credit carte) {
         this.carte = carte;
@@ -44,7 +53,7 @@ public class Transaction {
       tarif = 0;
       carte = null;
       zone = "";
-      typePaiement = "";
+      typePaiement = "inconnu";
     }
 
     public int getTarif() {
@@ -74,5 +83,6 @@ public class Transaction {
     public String getTypePaiement() {
         return typePaiement;
     }
+
 
 }

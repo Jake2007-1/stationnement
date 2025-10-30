@@ -202,6 +202,7 @@ public class GUITP2 {
     public void boutonNumeroLettre_actionPerformed(String lettreChiffre) {
         // 2. À compléter, afficher la place choisie dans le champMessage
         // à partir de la lettre ou du chiffre cliqué en paramètre
+        zoneRecu.setText("");
         if(!b.isPlaceConfirmer()){
             place += lettreChiffre;
             champMessage.setText(place);
@@ -275,6 +276,11 @@ public class GUITP2 {
 
     private void boutonOK_actionPerformed() {
         // 11 à coder
+        if (b.getTransactionCourante().getTypePaiement() != "inconnu"){
+            champMessage.setText("");
+            zoneRecu.setText(b.ok());
+            place = "";
+        }
     }
 
     private void boutonAnnuler_actionPerformed() {

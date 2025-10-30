@@ -31,6 +31,13 @@ public class Credit {
         return num;
     }
 
+    public void soustraireSolde(double montant){
+        solde -= montant;
+    }
+    public void addSolde(double montant){
+        solde += montant;
+    }
+
 
 
     public boolean validCarte(){
@@ -39,5 +46,9 @@ public class Credit {
             valide = true;
         }
         return valide;
+    }
+
+    public double getSolde() {
+        return solde;
     }
 }

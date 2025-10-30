@@ -140,6 +140,9 @@ public class Borne {
         if (duree > 120){
             duree = 120;
         }
+        if(transactionCourante.getTypePaiement() == "inconnu"){
+            transactionCourante.setTypePaiement("comptant");
+        }
         transactionCourante.setDuree(duree);
         transactionCourante.setMontant(montant);
 
@@ -161,16 +164,27 @@ public class Borne {
 
     }
     public String plus(){
-        if (transactionCourante.getDuree() != 120){
-            transactionCourante.setMontant(transactionCourante.getMontant() + transactionCourante.getTarif() / 4);
-            transactionCourante.setDuree(transactionCourante.getDuree() + 15);
+        String message = "Pour ce montant : " +  (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";;
+        if (transactionCourante.getDuree() < 120){
+            if (transactionCourante.getCarte().getSolde() * 100 >= transactionCourante.getMontant() + 25){
+                transactionCourante.setMontant(transactionCourante.getMontant() +  25);
+                transactionCourante.setDuree((int) Math.round(transactionCourante.getDuree() + (0.25 * 60.0) * 100 / transactionCourante.getTarif()));
+                transactionCourante.getCarte().soustraireSolde((transactionCourante.getMontant() + 25) / 100);
+                message = "Pour ce montant : " +  (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+            }
+            else {
+                message = "Manque de fond sur votre carte.";
+            }
+
         }
-        return "Pour ce montant : " +  (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+
+        return message;
     }
     public String moin(){
-        if (transactionCourante.getDuree() != 120){
-            transactionCourante.setMontant(transactionCourante.getMontant() - transactionCourante.getTarif() / 4);
-            transactionCourante.setDuree(transactionCourante.getDuree() - 15);
+        if (transactionCourante.getDuree() != 0){
+            transactionCourante.setMontant(transactionCourante.getMontant() - 25);
+            transactionCourante.setDuree(transactionCourante.getDuree() -  60 * 25 / transactionCourante.getTarif() );
+            transactionCourante.getCarte().addSolde((transactionCourante.getMontant() - 25) / 100);
         }
         return "Pour ce montant : " + (double)transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
     }
@@ -182,8 +196,10 @@ public class Borne {
     }
     public String ok(){
         banque += transactionCourante.getMontant();
-        String message = "Vous avez " + transactionCourante.getDuree() + "minutes au cout de " + transactionCourante.getMontant() +". \nBonne Journée!";
+        String message = "Vous avez " + transactionCourante.getDuree() + "minutes au cout de " + (double) transactionCourante.getMontant() / 100 +"$.\n Mode de paiement : "  + transactionCourante.getTypePaiement() + ".\nBonne Journée!";
         transactionCourante.init();
+        placeConfirmer = false;
+        place = "";
         return message;
     }
 
