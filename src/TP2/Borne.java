@@ -168,7 +168,7 @@ public class Borne {
         if (transactionCourante.getDuree() < 120){
             if (transactionCourante.getCarte().getSolde() * 100 >= transactionCourante.getMontant() + 25){
                 transactionCourante.setMontant(transactionCourante.getMontant() +  25);
-                transactionCourante.setDuree((int) Math.round(transactionCourante.getDuree() + (0.25 * 60.0) * 100 / transactionCourante.getTarif()));
+                transactionCourante.setDuree(transactionCourante.getDuree() + Math.round(60 * ((float) 25 / transactionCourante.getTarif())));
                 transactionCourante.getCarte().soustraireSolde((transactionCourante.getMontant() + 25) / 100);
                 message = "Pour ce montant : " +  (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
             }
