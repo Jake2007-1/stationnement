@@ -1,5 +1,6 @@
 package TP2;
 
+import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,23 +13,15 @@ public class Borne {
     private static double banque = 0;
     private String place;
     private boolean placeConfirmer;
-
+    private final DecimalFormat DF;
     public static final String ZONE_SQ = "SQ";
     public static final String ZONE_G = "G";
-
-
-    //zone G = 4,25/h
-    // Lun a Ven 8-23
-    // Sam 9-23
-    //Dim 13-18
-    //zone SQ = 2,25/h
-    // Lun a Ven 9-21
-    // Sam 9-18
 
     public Borne() {
         this.transactionCourante = null;
         place = "";
         placeConfirmer = false;
+        DF = new DecimalFormat("0.00$");
     }
 
     public Transaction getTransactionCourante() {
@@ -133,20 +126,17 @@ public class Borne {
     }
     public String plus(int piece){
 
-        int montant = transactionCourante.getMontant();
-        int duree = transactionCourante.getDuree();
-        montant += piece;
-        duree += Math.round(60 * ((float) piece / transactionCourante.getTarif()));
-        if (duree > 120){
-            duree = 120;
+
+        transactionCourante.setMontant(transactionCourante.getMontant() + piece);
+        transactionCourante.setDuree((int) ((transactionCourante.getMontant() * 60.0) / transactionCourante.getTarif()));
+        if (transactionCourante.getDuree() > 120){
+            transactionCourante.setDuree(120);
         }
         if(transactionCourante.getTypePaiement() == "inconnu"){
             transactionCourante.setTypePaiement("comptant");
         }
-        transactionCourante.setDuree(duree);
-        transactionCourante.setMontant(montant);
 
-        return "Pour ce montant : " + (double) montant / 100 + "$ \nVous avez cet durée : " + duree + "minutes.";
+        return "Pour ce montant : " + DF.format((double) transactionCourante.getMontant() / 100) +".\nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
 
     }
     public String validCarte(String s, String exp){
@@ -154,7 +144,8 @@ public class Borne {
         String message;
         if(carte.validCarte()){
             message = "Carte valid veuillez continuer.";
-            transactionCourante.setTypePaiement("Carte");
+            if (transactionCourante.getTypePaiement() == "inconnu") transactionCourante.setTypePaiement("Carte");
+            else transactionCourante.setTypePaiement("Comptant et carte");
             transactionCourante.setCarte(carte);
         }
         else {
@@ -164,13 +155,13 @@ public class Borne {
 
     }
     public String plus(){
-        String message = "Pour ce montant : " +  (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";;
+        String message = "Pour ce montant : " +  DF.format((double) transactionCourante.getMontant() / 100) +".\nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";;
         if (transactionCourante.getDuree() < 120){
             if (transactionCourante.getCarte().getSolde() * 100 >= transactionCourante.getMontant() + 25){
                 transactionCourante.setMontant(transactionCourante.getMontant() +  25);
-                transactionCourante.setDuree(transactionCourante.getDuree() + Math.round(60 * ((float) 25 / transactionCourante.getTarif())));
                 transactionCourante.getCarte().soustraireSolde((transactionCourante.getMontant() + 25) / 100);
-                message = "Pour ce montant : " +  (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+                transactionCourante.setDuree((int) ((transactionCourante.getMontant() * 60.0) / transactionCourante.getTarif()));
+                message = "Pour ce montant : " +  DF.format((double) transactionCourante.getMontant() / 100) +".\nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
             }
             else {
                 message = "Manque de fond sur votre carte.";
@@ -183,32 +174,37 @@ public class Borne {
     public String moin(){
         if (transactionCourante.getDuree() != 0){
             transactionCourante.setMontant(transactionCourante.getMontant() - 25);
-            transactionCourante.setDuree(transactionCourante.getDuree() -  60 * 25 / transactionCourante.getTarif() );
             transactionCourante.getCarte().addSolde((transactionCourante.getMontant() - 25) / 100);
+            transactionCourante.setDuree((int) ((transactionCourante.getMontant() * 60.0) / transactionCourante.getTarif()));
         }
-        return "Pour ce montant : " + (double)transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+        return "Pour ce montant : " + DF.format((double) transactionCourante.getMontant() / 100) +".\nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
     }
     public String max(){
         transactionCourante.setDuree(120);
         transactionCourante.setMontant(transactionCourante.getTarif() * 2);
 
-        return "Pour ce montant : " + (double) transactionCourante.getMontant() / 100 + "$ \nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
+        return "Pour ce montant : " + DF.format((double) transactionCourante.getMontant() / 100) +".\nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";
     }
     public String ok(){
-        banque += transactionCourante.getMontant();
-        String message = "Vous avez " + transactionCourante.getDuree() + "minutes au cout de " + (double) transactionCourante.getMontant() / 100 +"$.\n Mode de paiement : "  + transactionCourante.getTypePaiement() + ".\nBonne Journée!";
-        transactionCourante.init();
+        banque += (double) transactionCourante.getMontant() / 100;
+        String message = "Vous avez " + transactionCourante.getDuree() + "minutes au cout de " + DF.format((double) transactionCourante.getMontant() / 100) +".\n Mode de paiement : "  + transactionCourante.getTypePaiement() + ".\nBonne Journée!";
+        transactionCourante = null;
         placeConfirmer = false;
         place = "";
         return message;
     }
 
-    public String atteintMax(){
-        String message = "";
-        if (transactionCourante.getDuree() == 120){
-            message = "Vous êtes déja au maximum, veuillez confirmer la transaction ou retirer du temps.";
-        }
-        return  message;
+    public String annule(){
+        transactionCourante = null;
+        place = "";
+        placeConfirmer = false;
+        return "Transaction annulé";
+    }
+
+    public String genererRaport(){
+        String message =  "Vous avez retirer " + DF.format(banque);
+        banque = 0;
+        return message;
     }
 
 

@@ -250,6 +250,8 @@ public class GUITP2 {
         //7. à coder
         champMessage.setText("");
         champMessage.setText(b.validCarte(champNumeroCarte.getText(),champDateExp.getText()));
+        champNumeroCarte.setText("");
+        champDateExp.setText("");
     }
 
     private void boutonPlus_actionPerformed() {
@@ -285,10 +287,18 @@ public class GUITP2 {
 
     private void boutonAnnuler_actionPerformed() {
        //12 à coder
+        if(b.getTransactionCourante() != null) {
+            champMessage.setText(b.annule());
+            place = "";
+        }
     }
 
     private void boutonRapport_actionPerformed() {
         //13 à coder
+        if (b.getTransactionCourante() == null) {
+            champMessage.setText("");
+            zoneRecu.setText(b.genererRaport());
+        }
     }
 
     public static void main(String[] args) {
