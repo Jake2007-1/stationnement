@@ -124,10 +124,9 @@ public class Borne {
 
         return message;
     }
-    public String plus(int piece){
-
-
-        transactionCourante.setMontant(transactionCourante.getMontant() + piece);
+    public String ajoutPiece(int piece){
+        Piece p = new Piece(piece);
+        transactionCourante.setMontant(transactionCourante.getMontant() + p.getValeur());
         transactionCourante.setDuree((int) ((transactionCourante.getMontant() * 60.0) / transactionCourante.getTarif()));
         if (transactionCourante.getDuree() > 120){
             transactionCourante.setDuree(120);
@@ -140,7 +139,7 @@ public class Borne {
 
     }
     public String validCarte(String s, String exp){
-        Credit carte = new Credit(s,YearMonth.parse(exp, DateTimeFormatter.ofPattern("MM/yy")), 1000);
+        Credit carte = new Credit(s,YearMonth.parse(exp, DateTimeFormatter.ofPattern("MM/yy")), 000);
         String message;
         if(carte.validCarte()){
             message = "Carte valid veuillez continuer.";
@@ -154,7 +153,7 @@ public class Borne {
         return message;
 
     }
-    public String plus(){
+    public String ajoutPiece(){
         String message = "Pour ce montant : " +  DF.format((double) transactionCourante.getMontant() / 100) +".\nVous avez cet durée : " + transactionCourante.getDuree() + "minutes.";;
         if (transactionCourante.getDuree() < 120){
             if (transactionCourante.getCarte().getSolde() * 100 >= transactionCourante.getMontant() + 25){

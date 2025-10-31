@@ -230,20 +230,20 @@ public class GUITP2 {
     private void bouton25_actionPerformed() {
         //4. à coder
         champMessage.setText("");
-        champMessage.setText(b.plus(25));
+        champMessage.setText(b.ajoutPiece(25));
 
     }
 
     private void bouton100_actionPerformed() {
         //5. à coder
         champMessage.setText("");
-        champMessage.setText(b.plus(100));
+        champMessage.setText(b.ajoutPiece(100));
     }
 
     private void bouton200_actionPerformed() {
         //6. à coder
         champMessage.setText("");
-        champMessage.setText(b.plus(200));
+        champMessage.setText(b.ajoutPiece(200));
     }
 
     private void boutonValiderDateExp_actionPerformed(){
@@ -257,7 +257,7 @@ public class GUITP2 {
     private void boutonPlus_actionPerformed() {
         //8. à coder
         if( b.getTransactionCourante().getCarte() != null) {
-            champMessage.setText(b.plus());
+            champMessage.setText(b.ajoutPiece());
         }
     }
 
